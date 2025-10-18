@@ -255,6 +255,17 @@ function EditProperty({ functions, property }) {
       <div className="flex items-left space-y-4 space-x-4 -mb-2 flex-cols-2 md:flex-cols-1">
         <Input
           type="text"
+          label="País"
+          wid="150"
+          select="true"
+          selectOptions={["Brasil", "Estados Unidos", "Portugal"]}
+          value={property.state}
+          setValue={(newValue) =>
+            functions.change({ ...property, state: newValue })
+          }
+        />
+        <Input
+          type="text"
           label="Estado"
           wid="150"
           select="true"
