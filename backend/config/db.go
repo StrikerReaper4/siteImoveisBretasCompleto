@@ -4,13 +4,13 @@ import (
 	"database/sql"
 	"log"
 
-	_ "github.com/go-sql-driver/mysql"
+	_ "github.com/lib/pq"
 )
 
 func Connect() *sql.DB{
-	connect_string := "root:novasenha@tcp(localhost:3306)/imovelGoBanco"
+	connect_string := "user=postgres password=admin123 dbname=imovelgobanco host=localhost sslmode=disable"
 
-	db, err := sql.Open("mysql", connect_string)
+	db, err := sql.Open("postgres", connect_string)
 
 	if err != nil{
 		log.Fatal("Erro ao abrir conexão")

@@ -30,7 +30,7 @@ export default function Loading() {
         <div className="h-full bg-[#c5ac5c] animate-progress"></div>
       </div>
 
-      <style jsx>{`
+      <style>{`
         @keyframes spin-slow {
           0% { transform: rotate(0deg); }
           100% { transform: rotate(360deg); }
