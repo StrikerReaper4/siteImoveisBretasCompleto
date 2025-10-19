@@ -3,155 +3,28 @@ import { FaPlus } from "react-icons/fa";
 import FilterCard from "../components/FilterCard";
 import CardProperty from "../components/CardProperty";
 import { useState, useCallback, useEffect } from "react";
+import { getImoveis } from "../services/imovelService";
 import Modal from "../components/Modal";
 import Input from "../components/Input";
 import Button from "../components/Button";
 
 function AdminPage() {
-  const properties = [
-    {
-      id: 1,
-      type: "Casa",
-      operation: "Aluguel",
-      img: [
-        "/placeholder_house.jpg",
-        "/placeholder_house_2.jpg",
-        "/placeholder_house_3.png",
-      ],
-      address: "Rua das Flores, 123",
-      neighborhood: "Jardim Exemplos",
-      city: "CAMPO GRANDE",
-      state: "MS",
-      area: 2000,
-      items: {
-        quartos: 2,
-        banheiros: 1,
-        vagas: 1,
-      },
-      price: 500000,
-      description:
-        "Uma casa espaçosa e confortável, ideal para famílias grandes.",
-    },
-    {
-      id: 2,
-      type: "Apartamento",
-      operation: "Compra",
-      img: [
-        "/placeholder_house.jpg",
-        "/placeholder_house_2.jpg",
-        "/placeholder_house_3.png",
-      ],
-      address: "Avenida Central, 456",
-      neighborhood: "Jardim Exemplos",
-      city: "CAMPO GRANDE",
-      state: "MS",
-      area: 120,
-      items: {
-        quartos: 3,
-        banheiros: 2,
-        vagas: 2,
-      },
-      price: 750000,
-      description:
-        "Um apartamento moderno e aconchegante, perfeito para famílias pequenas.",
-    },
-    {
-      id: 3,
-      type: "Terreno",
-      operation: "Compra",
-      img: [
-        "/placeholder_house.jpg",
-        "/placeholder_house_2.jpg",
-        "/placeholder_house_3.png",
-      ],
-      address: "Facom",
-      neighborhood: "Jardim Exemplos",
-      city: "CAMPO GRANDE",
-      state: "MS",
-      area: 1000,
-      items: {
-        quartos: 0,
-        banheiros: 0,
-        vagas: 0,
-      },
-      price: 300000,
-      description:
-        "Um terreno espaçoso ideal para construir a casa dos seus sonhos.",
-    },
-    {
-      id: 4,
-      type: "Casa",
-      operation: "Aluguel",
-      img: [
-        "/placeholder_house.jpg",
-        "/placeholder_house_2.jpg",
-        "/placeholder_house_3.png",
-      ],
-      address: "Rua das Palmeiras, 321",
-      neighborhood: "Jardim Exemplos",
-      city: "CAMPO GRANDE",
-      state: "MS",
-      area: 2500,
-      items: {
-        quartos: 4,
-        banheiros: 3,
-        vagas: 2,
-      },
-      price: 1200000,
-      description:
-        "Uma casa espaçosa e confortável, ideal para famílias grandes.",
-    },
-    {
-      id: 5,
-      type: "Apartamento",
-      operation: "Compra",
-      img: [
-        "/placeholder_house.jpg",
-        "/placeholder_house_2.jpg",
-        "/placeholder_house_3.png",
-      ],
-      address: "Avenida dos Lírios, 654",
-      neighborhood: "Jardim Exemplos",
-      city: "CAMPO GRANDE",
-      state: "MS",
-      area: 100,
-      items: {
-        quartos: 2,
-        banheiros: 1,
-        vagas: 1,
-      },
-      price: 600000,
-      description:
-        "Um apartamento moderno e aconchegante, perfeito para famílias pequenas.",
-    },
-    {
-      id: 6,
-      type: "Terreno",
-      operation: "Compra",
-      img: [
-        "/placeholder_house.jpg",
-        "/placeholder_house_2.jpg",
-        "/placeholder_house_3.png",
-      ],
-      address: "Rua do Campo, 987",
-      neighborhood: "Jardim Exemplos",
-      city: "CAMPO GRANDE",
-      state: "MS",
-      area: 1200,
-      items: {
-        quartos: 0,
-        banheiros: 0,
-        vagas: 0,
-      },
-      price: 400000,
-      description:
-        "Um terreno espaçoso ideal para construir a casa dos seus sonhos.",
-    },
-  ];
+  const [properties, setProperties] = useState([]);
   const [modalType, setModalType] = useState(null);
   const [propertyId, setPropertyId] = useState(null);
   const [selectedProperty, setSelectedProperty] = useState(null);
 
+    useEffect(() => {
+    const fetchProperties = async () => {
+    try {
+      const data = await getImoveis();
+      setProperties(data); 
+    } catch (err) {
+      console.error("Erro ao pegar imóveis:", err);
+    }
+    }
+    fetchProperties()
+  }, []);
   const deletePropertyFunction = () => {
     alert(`Imóvel de ID ${propertyId} foi deletado.`);
     closeModal();
