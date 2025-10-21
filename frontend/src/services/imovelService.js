@@ -23,7 +23,7 @@ export const filterImoveis = async (filtro) => {
 
 export const createImovel = async (imovel) => {
   try {
-    const response = await api.post('/criar/imoveis', imovel);
+    const response = await api.post('/criar/imovel', imovel);
     return response.data;
   } catch (error) {
     console.error('Erro ao criar imóvel:', error);
@@ -33,10 +33,20 @@ export const createImovel = async (imovel) => {
 
 export const deleteImovel = async (id) => {
     try {
-        const response = await api.delete(`/imoveis/${id}`);
+        const response = await api.post(`/deletar/imovel`, { id_imovel: id });
         return response.data;
     } catch (error) {
         console.error('Erro ao deletar imóvel:', error);
         throw error;
     }
+}
+
+export const updateImovel = async (imovel) => {
+  try {
+    const response = await api.post('/atualizar/imovel', imovel);
+    return response.data;
+  } catch (error) {
+    console.error('Erro ao atualizar imóvel:', error);
+    throw error;
+  }
 }

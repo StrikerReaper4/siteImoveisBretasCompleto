@@ -5,6 +5,7 @@ import (
 	"apiGo/service"
 	"encoding/json"
 	"net/http"
+	"log"
 )
 
 func CreateImovel(w http.ResponseWriter, r *http.Request){
@@ -25,6 +26,7 @@ func CreateImovel(w http.ResponseWriter, r *http.Request){
 	if err != nil{
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
+	log.Println("imovel criado com sucesso", imovelResult)
 
 	w.Header().Set("Content-Type","application/json")
 
@@ -90,7 +92,7 @@ func DeleteImovel(w http.ResponseWriter, r *http.Request){
 	if err != nil{
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
-
+	log.Println("imovel deletado com sucesso", rowsAffected)
 }
 
 func UpdateImovel(w http.ResponseWriter, r *http.Request){
@@ -120,5 +122,7 @@ func UpdateImovel(w http.ResponseWriter, r *http.Request){
 	if err != nil{
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
+
+	log.Println("imovel atualizado com sucesso", rowsAffected)
 
 }
