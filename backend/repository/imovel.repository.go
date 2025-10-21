@@ -4,6 +4,7 @@ import (
 	"apiGo/config"
 	"apiGo/model"
 	"fmt"
+	"log"
 	"strings"
 )
 
@@ -23,6 +24,7 @@ func InsertImovelRepository(im model.Imovel) (int, error) {
 	) RETURNING id;
 	`
 
+
 	var lastId int
 	err := db.QueryRow(query,
 		im.Tipo, im.Rua, im.Numero, im.Bairro, im.Cidade, im.Estado, im.Cep,
@@ -31,6 +33,7 @@ func InsertImovelRepository(im model.Imovel) (int, error) {
 	).Scan(&lastId)
 
 	if err != nil {
+		log.Println("Erro ao inserir imóvel:", err);
 		return 0, err
 	}
 
@@ -202,11 +205,7 @@ func UpdateImovelRepository(imovel model.AtualizarImovel) (int, error) {
 		args = append(args, imovel.Banheiros)
 		paramIndex++
 	}
-	if imovel.Cozinha != 0 {
-		fields = append(fields, fmt.Sprintf("cozinha = $%d", paramIndex))
-		args = append(args, imovel.Cozinha)
-		paramIndex++
-	}
+
 	if imovel.Area != 0 {
 		fields = append(fields, fmt.Sprintf("area = $%d", paramIndex))
 		args = append(args, imovel.Area)

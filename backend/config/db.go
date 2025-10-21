@@ -8,8 +8,8 @@ import (
 )
 
 func Connect() *sql.DB{
-	connect_string := "user=postgres password=senhanova dbname=postgres host=localhost sslmode=disable"
-
+	//connect_string := "user=postgres password=senhanova dbname=postgres host=localhost sslmode=disable"
+	connect_string := "user=postgres password=senha dbname=imovelgobanco host=localhost sslmode=disable"
 	db, err := sql.Open("postgres", connect_string)
 
 	if err != nil{
@@ -21,5 +21,6 @@ func Connect() *sql.DB{
 	if err != nil{
 		log.Fatal("Erro ao conectar com banco", err)
 	}
+	
 	return db
 }

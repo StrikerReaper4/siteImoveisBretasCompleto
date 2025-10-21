@@ -30,7 +30,7 @@ func main(){
 	http.HandleFunc("/atualizar/imovel", controller.UpdateImovel)
 	
 		c := cors.New(cors.Options{
-		AllowedOrigins:   []string{"http://localhost:5173"}, // seu frontend
+		AllowedOrigins:   []string{"http://localhost:5173"},
 		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
 		AllowedHeaders:   []string{"Content-Type", "Authorization"},
 		AllowCredentials: true,
