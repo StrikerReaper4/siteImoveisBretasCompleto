@@ -27,7 +27,7 @@ func main(){
 
 	http.HandleFunc("/deletar/imovel", controller.DeleteImovel)
 
-	http.HandleFunc("/atulizar/imovel", controller.UpdateImovel)
+	http.HandleFunc("/atualizar/imovel", controller.UpdateImovel)
 	
 		c := cors.New(cors.Options{
 		AllowedOrigins:   []string{"http://localhost:5173"}, // seu frontend
