@@ -3,7 +3,6 @@ package repository
 import (
 	"apiGo/config"
 	"apiGo/model"
-	"database/sql"
 )
 
 func InsertRepository(p model.Pessoa) (int , error){
@@ -24,20 +23,17 @@ func InsertRepository(p model.Pessoa) (int , error){
 
 
 
-func FindByEmail(db *sql.DB, email string) (model.Pessoa, error){
+func FindByEmail(email string) (model.Pessoa, error) {
+	db := config.Connect()
+	defer db.Close()
 
 	var p model.Pessoa
-
-	row := db.QueryRow("select id, nome, email, senha, role from pessoas where email = ?", email)
+	row := db.QueryRow("SELECT id, nome, email, senha, role FROM pessoas WHERE email = $1", email)
 
 	err := row.Scan(&p.Id, &p.Nome, &p.Email, &p.Senha, &p.Role)
-
-
-	if err != nil{
+	if err != nil {
 		return model.Pessoa{}, err
 	}
 
 	return p, nil
-	
-	
 }

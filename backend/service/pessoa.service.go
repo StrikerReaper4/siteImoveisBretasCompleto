@@ -1,7 +1,6 @@
 package service
 
 import (
-	"apiGo/config"
 	"apiGo/model"
 	"apiGo/repository"
 	"apiGo/utils"
@@ -38,11 +37,8 @@ func CreateService(p model.Pessoa) (model.Pessoa, error){
 
 func LoginService(email string, senha string) (model.Pessoa,model.TokenResponse, error){
 	
-	db := config.Connect()
 
-	defer db.Close()
-
-    p, err := repository.FindByEmail(db, email)
+    p, err := repository.FindByEmail(email)
 
 	fmt.Println(p)
 

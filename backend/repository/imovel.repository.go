@@ -15,11 +15,11 @@ func InsertImovelRepository(im model.Imovel) (int, error) {
 	INSERT INTO imoveis (
 		tipo, rua, numero, bairro, cidade, estado, cep, pais,
 		area, quartos, banheiros, suites, vagas, andar,
-		valor, situacao, disponivel, id_pessoa
+		valor, situacao, disponivel,descricao,imagem, id_pessoa
 	) VALUES (
 		$1,$2,$3,$4,$5,$6,$7,$8,
 		$9,$10,$11,$12,$13,$14,
-		$15,$16,$17,$18
+		$15,$16,$17,$18, $19,$20
 	) RETURNING id;
 	`
 
@@ -27,7 +27,7 @@ func InsertImovelRepository(im model.Imovel) (int, error) {
 	err := db.QueryRow(query,
 		im.Tipo, im.Rua, im.Numero, im.Bairro, im.Cidade, im.Estado, im.Cep,
 		im.Pais, im.Area, im.Quartos, im.Banheiros, im.Suites, im.Vagas, im.Andar,
-		im.Valor, im.Situacao, im.Disponivel, im.IdPessoa,
+		im.Valor, im.Situacao, im.Disponivel,im.Descricao,im.Imagem, im.IdPessoa,
 	).Scan(&lastId)
 
 	if err != nil {
@@ -44,7 +44,7 @@ func FilterImovelRepository(filter model.Filtro) ([]model.Imovel, error) {
 	args := []interface{}{}
 	query := `SELECT id, tipo, rua, numero, bairro, cidade, estado, cep, pais,
                      area, quartos, banheiros, suites, vagas, andar,
-                     valor, situacao, disponivel, id_pessoa
+                     valor, situacao, disponivel, descricao, imagem, id_pessoa
               FROM imoveis WHERE 1=1`
 
 	paramIndex := 1 // contador para $1, $2, ...
@@ -119,6 +119,8 @@ func FilterImovelRepository(filter model.Filtro) ([]model.Imovel, error) {
 			&imovel.Valor,
 			&imovel.Situacao,
 			&imovel.Disponivel,
+			&imovel.Descricao,
+			&imovel.Imagem,
 			&imovel.IdPessoa,
 		)
 		if err != nil {
@@ -152,73 +154,87 @@ func DeleteImovelRepository(id int) (int, error) {
 
 	return int(rowsAffected), nil
 }
-func UpdateImovelRepository(imovel model.AtualizarImovel) (int, error){
-
+func UpdateImovelRepository(imovel model.AtualizarImovel) (int, error) {
 	db := config.Connect()
-
 	defer db.Close()
 
 	fields := []string{}
 	args := []interface{}{}
+	paramIndex := 1
 
-	if imovel.Estado != ""{
-		fields = append(fields, "estado = ?")
+	if imovel.Estado != "" {
+		fields = append(fields, fmt.Sprintf("estado = $%d", paramIndex))
 		args = append(args, imovel.Estado)
+		paramIndex++
 	}
-	if imovel.Cidade != ""{
-		fields = append(fields, "cidade = ?")
+	if imovel.Cidade != "" {
+		fields = append(fields, fmt.Sprintf("cidade = $%d", paramIndex))
 		args = append(args, imovel.Cidade)
+		paramIndex++
 	}
-	if imovel.Bairro != ""{
-		fields = append(fields, "bairro = ?")
+	if imovel.Bairro != "" {
+		fields = append(fields, fmt.Sprintf("bairro = $%d", paramIndex))
 		args = append(args, imovel.Bairro)
+		paramIndex++
 	}
-	if imovel.Situacao != ""{
-		fields = append(fields, "situacao = ?")
+	if imovel.Situacao != "" {
+		fields = append(fields, fmt.Sprintf("situacao = $%d", paramIndex))
 		args = append(args, imovel.Situacao)
+		paramIndex++
 	}
-	if imovel.Tipo != ""{
-		fields = append(fields, "tipo = ?")
+	if imovel.Tipo != "" {
+		fields = append(fields, fmt.Sprintf("tipo = $%d", paramIndex))
 		args = append(args, imovel.Tipo)
+		paramIndex++
 	}
-	if imovel.Valor != 0{
-		fields = append(fields, "valor = ?")
+	if imovel.Valor != 0 {
+		fields = append(fields, fmt.Sprintf("valor = $%d", paramIndex))
 		args = append(args, imovel.Valor)
+		paramIndex++
 	}
-	if imovel.Quartos != 0{
-		fields = append(fields, "quartos = ?")
+	if imovel.Quartos != 0 {
+		fields = append(fields, fmt.Sprintf("quartos = $%d", paramIndex))
 		args = append(args, imovel.Quartos)
+		paramIndex++
 	}
-	if imovel.Banheiros != 0{
-		fields = append(fields, "banheiros = ?")
+	if imovel.Banheiros != 0 {
+		fields = append(fields, fmt.Sprintf("banheiros = $%d", paramIndex))
 		args = append(args, imovel.Banheiros)
+		paramIndex++
 	}
-	if imovel.Cozinha != 0{
-		fields = append(fields, "cozinha = ?")
+	if imovel.Cozinha != 0 {
+		fields = append(fields, fmt.Sprintf("cozinha = $%d", paramIndex))
 		args = append(args, imovel.Cozinha)
+		paramIndex++
 	}
-	if imovel.Area != 0{
-		fields = append(fields, "area = ?")
+	if imovel.Area != 0 {
+		fields = append(fields, fmt.Sprintf("area = $%d", paramIndex))
 		args = append(args, imovel.Area)
+		paramIndex++
 	}
-	if imovel.Descricao != ""{
-		fields = append(fields, "descricao = ?")
+	if imovel.Descricao != "" {
+		fields = append(fields, fmt.Sprintf("descricao = $%d", paramIndex))
 		args = append(args, imovel.Descricao)
+		paramIndex++
 	}
-	
-	query := fmt.Sprintf("update imoveis set %s where id = ?", strings.Join(fields, ", "))
+	if len(imovel.Imagem) > 0 {
+		fields = append(fields, fmt.Sprintf("imagem = $%d", paramIndex))
+		args = append(args, imovel.Imagem)
+		paramIndex++
+	}
 
+	if len(fields) == 0 {
+		return 0, fmt.Errorf("nenhum campo para atualizar")
+	}
+
+	query := fmt.Sprintf("UPDATE imoveis SET %s WHERE id = $%d", strings.Join(fields, ", "), paramIndex)
 	args = append(args, imovel.IdImovel)
 
 	result, err := db.Exec(query, args...)
-
-	if err != nil{
+	if err != nil {
 		return 0, err
 	}
 
 	rowsAffected, _ := result.RowsAffected()
-
-	
-
 	return int(rowsAffected), nil
 }

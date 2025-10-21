@@ -27,6 +27,8 @@ type Imovel struct{
 	Valor int `json:"valor"`
 	Situacao string `json:"situacao"`
 	Disponivel bool `json:"disponivel"`
+	Descricao string `json:"descricao"`
+	Imagem []byte `json:"imagem"`
 	IdPessoa int `json:"id_pessoa"`
 }
 
@@ -66,6 +68,7 @@ type AtualizarImovel struct{
 	Cozinha int `json:"vagas"`
 	Area int `json:"area"`
 	Descricao string `json:"descricao"`
+	Imagem []byte `json:"imagem"`
 }
 
 type DeletarImovel struct{
