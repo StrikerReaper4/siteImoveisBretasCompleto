@@ -3,9 +3,9 @@ package main
 import (
 	"apiGo/config"
 	"apiGo/controller"
-	"apiGo/middlewares"
 	"log"
 	"net/http"
+
 	"github.com/rs/cors"
 )
 
@@ -25,7 +25,9 @@ func main(){
 
 	http.HandleFunc("/filtrar/imoveis", controller.FilterImovel)	
 
-	http.HandleFunc("/deletar/imovel", middlewares.AuthMiddleware(controller.DeleteImovel))
+	http.HandleFunc("/deletar/imovel", controller.DeleteImovel)
+
+	http.HandleFunc("/atulizar/imovel", controller.UpdateImovel)
 	
 		c := cors.New(cors.Options{
 		AllowedOrigins:   []string{"http://localhost:5173"}, // seu frontend
