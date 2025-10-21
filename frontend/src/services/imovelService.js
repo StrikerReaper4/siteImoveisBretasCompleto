@@ -20,9 +20,10 @@ export const filterImoveis = async (filtro) => {
   }
 }
 
+
 export const createImovel = async (imovel) => {
   try {
-    const response = await api.post('/imoveis', imovel);
+    const response = await api.post('/criar/imoveis', imovel);
     return response.data;
   } catch (error) {
     console.error('Erro ao criar imóvel:', error);

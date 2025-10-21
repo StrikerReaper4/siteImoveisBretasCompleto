@@ -26,6 +26,18 @@ function FilterCard({ admin,onFilter }) {
   const handleApplyFilters = (e) => {
     e.preventDefault();
     console.log(filter);
+    if (filter.tipo === "Qualquer"){
+      setFilter({...filter, tipo: ""})
+    }
+    if (filter.pais === "Qualquer"){
+      setFilter({...filter, pais: ""})
+    }
+    if (filter.estado === "Qualquer"){
+      setFilter({...filter, estado: ""})
+    }
+    if (filter.cidade === "Qualquer"){
+      setFilter({...filter, cidade: ""})
+    }
     /*Converter para Number */
     const numericFilter = {
       ...filter,
@@ -41,6 +53,7 @@ function FilterCard({ admin,onFilter }) {
       onFilter(imoveis);
       if (imoveis.length === 0) {
         alert("Nenhum imovel encontrado");
+        window.location.reload();
       }
     }
     fetchFilters();
@@ -70,7 +83,7 @@ function FilterCard({ admin,onFilter }) {
               label="Tipo de Imóvel"
               wid="150"
               select="true"
-              selectOptions={["Casa", "Apartamento", "Terreno"]}
+              selectOptions={["Qualquer","Casa", "Apartamento", "Terreno"]}
               value={filter.tipo}
               setValue={(newValue) => setFilter({ ...filter, tipo: newValue })}
             />
@@ -87,7 +100,7 @@ function FilterCard({ admin,onFilter }) {
               label="País"
               wid="full md:150"
               select="true"
-              selectOptions={["Brasil", "Estados Unidos", "Portugal"]}
+              selectOptions={["Qualquer","Brasil", "Estados Unidos", "Portugal"]}
               value={filter.pais}
               setValue={(newValue) => setFilter({ ...filter, pais: newValue })}
             />
@@ -96,7 +109,7 @@ function FilterCard({ admin,onFilter }) {
               label="Estado"
               wid="full md:150"
               select="true"
-              selectOptions={["SP", "RJ", "MG","PR"]}
+              selectOptions={["Qualquer","SP", "RJ", "MG","PR"]}
               value={filter.estado}
               setValue={(newValue) => setFilter({ ...filter, estado: newValue })}
             />
@@ -105,7 +118,7 @@ function FilterCard({ admin,onFilter }) {
               label="Cidade"
               wid="full md:150"
               select="true"
-              selectOptions={["São Paulo", "Rio de Janeiro", "Belo Horizonte","Curitiba"]}
+              selectOptions={["Qualquer","São Paulo", "Rio de Janeiro", "Belo Horizonte","Curitiba"]}
               value={filter.cidade}
               setValue={(newValue) => setFilter({ ...filter, cidade: newValue })}
             />
@@ -157,7 +170,7 @@ function FilterCard({ admin,onFilter }) {
               label="Quartos"
               wid="full md:150"
               select="true"
-              selectOptions={[1, 2, 3, 4, 5]}
+              selectOptions={[0, 1, 2, 3, 4, 5]}
               value={filter.quartos}
               setValue={(newValue) => setFilter({ ...filter, quartos: newValue })}
             />
@@ -166,7 +179,7 @@ function FilterCard({ admin,onFilter }) {
               label="Banheiros"
               wid="full md:150"
               select="true"
-              selectOptions={[1, 2, 3, 4, 5]}
+              selectOptions={[0, 1, 2, 3, 4, 5]}
               value={filter.banheiros}
               setValue={(newValue) => setFilter({ ...filter, banheiros: newValue })}
             />
@@ -175,7 +188,7 @@ function FilterCard({ admin,onFilter }) {
               label="Vagas"
               wid="full md:150"
               select="true"
-              selectOptions={[1, 2, 3, 4, 5]}
+              selectOptions={[0, 1, 2, 3, 4, 5]}
               value={filter.vagas}
               setValue={(newValue) => setFilter({ ...filter, vagas: newValue })}
             />

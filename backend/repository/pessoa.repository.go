@@ -8,7 +8,9 @@ import (
 
 func InsertRepository(p model.Pessoa) (int , error){
 
-	result, err := config.Connect().Exec("insert into pessoas (nome, email, senha, role) values (?, ?, ?, ?)", p.Nome, p.Email, p.Senha, p.Role)
+	result, err := config.Connect().Exec(
+    "INSERT INTO pessoas (nome, email, senha, role) VALUES ($1, $2, $3, $4)",p.Nome, p.Email, p.Senha, p.Role,)
+
 
 	
 	if err != nil{

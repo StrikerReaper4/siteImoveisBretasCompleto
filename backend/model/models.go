@@ -40,6 +40,7 @@ type TokenResponse struct{
 }
 
 type Filtro struct{
+	
 	Situacao string `json:"situacao"`
 	Tipo string `json:"tipo"`
 	Estado string `json:"estado"`
